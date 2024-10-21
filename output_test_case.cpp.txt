@@ -1,4 +1,3 @@
-Processed test_case.cpp -> output_test_case.cpp.txt 
 // Test case 1
 // TODO: message1
 

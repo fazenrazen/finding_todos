@@ -1,3 +1,18 @@
+'''
+    The test cases this does not cover are as follows
+    Test case 1: 
+    // <--
+    /*
+        Cant process the multiline comment if there is a preceding 
+        single line comment // 
+    */
+    
+    Test case 2:
+    CODE // TODO this cannot be handled at the moment
+    
+    
+'''
+
 import os
 import re
 
@@ -7,15 +22,9 @@ def find_todos_in_file(file_path):
     # find all the todos and store them into the list
     todos = []
     multiline = []
-    double_slash_multiline = []
-
-    file_path = 'test_case.cpp'
     
     # Checks
     multiline_check = False
-    double_slash_check = False
-    previous_double_slash = True
-    count = 0
     
     # open the file and read the file in    
     with open(file_path, "r", encoding='utf-8') as file:
@@ -37,6 +46,7 @@ def find_todos_in_file(file_path):
                     todos.append(multiline[:])  
                 multiline = []
             
+            # Working with Lines with // 
             if stripped_line.startswith("//"):
                 # Collect all lines in a comment block until a non-comment line is found
                 comment_block = []
@@ -67,10 +77,10 @@ def process_directory(directory):
             if todos:
                 output_filename = f"output_{filename}.txt"
                 with open(output_filename, "w", encoding='utf-8') as output_file:
-                    output_file.write(f"Processed {filename} -> {output_filename} \n")
                     for todo_block in todos:
                         output_file.write("\n".join(todo_block) + "\n\n")
 
+                print(f"Processed {filename} -> {output_filename}")
             else:
                 print(f"No TODOs found in {filename}.")
 
@@ -79,6 +89,6 @@ if __name__ == "__main__":
     directory_path = input("Please enter the path here: ")    
     process_directory(directory_path)
 
-    
+
     
             
