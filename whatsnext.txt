@@ -1,7 +1,33 @@
-Todos from file: test_case.cpp
-Starting at line: 12
+From file: test_case.cpp
+Starting at line: 3
+// Test case 1
+// TODO: message1
+
+From file: test_case.cpp
+Starting at line: 5
+// Test case 2
+// TODO: message2
+//
+// message
+// cool
+
+From file: test_case.cpp
+Starting at line: 6
 /*
 You are cool
 TODO: Hello my name is faizan
 */
+
+From file: test_case.cpp
+Starting at line: 11
+/*
+TODO: hello you are doing great today?
+How are you doing today
+
+*/
+
+From file: test_case.cpp
+Starting at line: 20
+// Test case 5:
+// TODO: message5
 

@@ -27,6 +27,7 @@ def find_todos_in_file(file_path):
 
     # Checks
     multiline_check = False
+    double_slash_check = False
     startLine = None
     
     # open the file and read the file to find todos
@@ -51,10 +52,29 @@ def find_todos_in_file(file_path):
                 
                 if find_todo_in_comment(comment_content):
                     todos[startLine] = comment_reader # might have to change this
+
                     # reset the comment reader after storing
-                    #print(todos)
                     comment_reader = [] 
+                    comment_content = []
+            
+            # if todo is wrapped in // comment
+            if stripped_line.startswith("//"):
+                comment_block = []
+                startLine = line_num
                 
+                # Continue collecting lines until we find a line that does not start with
+                while stripped_line.startswith("//"):
+                    comment_block.append(stripped_line)
+
+                    try:
+                        line = next(file)
+                        stripped_line = line.strip()
+                    except StopIteration:
+                        break  # Exit if we reach the end of the file
+            
+                # After collecting the block, check if "TODO" is present
+                if any("TODO" in line for line in comment_block):
+                    todos[startLine] = comment_block
                     
     
     return todos
@@ -72,16 +92,19 @@ def process_directory(directory):
                 
                 # Return todos dict from that file from a function
                 todos = find_todos_in_file(file_path)
-                output_file.write(f'Todos from file: {filename}\n')
+                #output_file.write(f'From file: {filename}\n')
                 
                 # print all the todos in this file
                 if todos:
                     for line_num, comment_block in todos.copy().items():
+                        # write file name to each todo block
+                        output_file.write(f'From file: {filename}\n')
                         output_file.write(f"Starting at line: {line_num}\n")
                         output_file.write("\n".join(comment_block) + "\n\n")
+                        print()
                         
                         
-                    print(f"Processed {filename} -> {output_file}")
+                    #print(f"Processed {filename} -> {output_file}")
                 else:
                     print(f"No TODOs found in {filename}")
 
