@@ -61,14 +61,16 @@ def find_todos_in_file(file_path):
             if stripped_line.startswith("//"):
                 comment_block = []
                 startLine = line_num
-                
+                                
                 # Continue collecting lines until we find a line that does not start with
                 while stripped_line.startswith("//"):
                     comment_block.append(stripped_line)
 
                     try:
-                        line = next(file)
+                        line = next(file) # reads the next line in the file
                         stripped_line = line.strip()
+                        if not stripped_line.startswith("//"):
+                            break
                     except StopIteration:
                         break  # Exit if we reach the end of the file
             
@@ -92,8 +94,7 @@ def process_directory(directory):
                 
                 # Return todos dict from that file from a function
                 todos = find_todos_in_file(file_path)
-                #output_file.write(f'From file: {filename}\n')
-                
+            
                 # print all the todos in this file
                 if todos:
                     for line_num, comment_block in todos.copy().items():
@@ -101,8 +102,6 @@ def process_directory(directory):
                         output_file.write(f'From file: {filename}\n')
                         output_file.write(f"Starting at line: {line_num}\n")
                         output_file.write("\n".join(comment_block) + "\n\n")
-                        print()
-                        
                         
                     #print(f"Processed {filename} -> {output_file}")
                 else:

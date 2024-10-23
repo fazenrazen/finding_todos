@@ -23,11 +23,10 @@ Starting at line: 11
 /*
 TODO: hello you are doing great today?
 How are you doing today
-
 */
 
 From file: test_case.cpp
-Starting at line: 20
+Starting at line: 19
 // Test case 5:
 // TODO: message5
 
