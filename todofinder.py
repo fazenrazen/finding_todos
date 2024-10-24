@@ -8,10 +8,10 @@ import re
 # Test using pytest
 
 def find_todo_in_comment(comment_block):
-    
     there_is_todo = False
     
-    if "TODO" or "Todo" in comment_block:
+    if "TODO" in comment_block or "Todo" in comment_block:
+        print("here")
         there_is_todo = True
     
     # print(comment_block)
@@ -29,6 +29,7 @@ def find_todos_in_file(file_path):
     multiline_check = False
     double_slash_check = False
     startLine = None
+    startLine_slash = None
     
     # open the file and read the file to find todos
     with open(file_path, "r", encoding='utf-8') as file:
@@ -59,24 +60,31 @@ def find_todos_in_file(file_path):
             
             # if todo is wrapped in // comment
             if stripped_line.startswith("//"):
-                comment_block = []
                 startLine = line_num
+                
+                if find_todo_in_comment(stripped_line):
+                    todos[startLine] = [stripped_line]
+                
+                
+                # if find_todo_in_comment(stripped_line):
+                #     comment_content = "".join(stripped_line)
+                #     todos[startLine] = comment_content
                                 
-                # Continue collecting lines until we find a line that does not start with
-                while stripped_line.startswith("//"):
-                    comment_block.append(stripped_line)
+                # # Continue collecting lines until we find a line that does not start with
+                # while stripped_line.startswith("//"):
+                #     comment_block.append(stripped_line)
 
-                    try:
-                        line = next(file) # reads the next line in the file
-                        stripped_line = line.strip()
-                        if not stripped_line.startswith("//"):
-                            break
-                    except StopIteration:
-                        break  # Exit if we reach the end of the file
+                #     try:
+                #         line = next(file) # reads the next line in the file
+                #         stripped_line = line.strip()
+                #         if not stripped_line.startswith("//"):
+                #             break
+                #     except StopIteration:
+                #         break  # Exit if we reach the end of the file
             
-                # After collecting the block, check if "TODO" is present
-                if any("TODO" in line for line in comment_block):
-                    todos[startLine] = comment_block
+                # # After collecting the block, check if "TODO" is present
+                # if any("TODO" in line for line in comment_block):
+                #     todos[startLine] = comment_block
                     
     
     return todos
